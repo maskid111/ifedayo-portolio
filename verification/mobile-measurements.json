@@ -1,0 +1,162 @@
+[
+  {
+    "route": "/about/",
+    "Reference": {
+      "heading": [
+        {
+          "font": "700 32px / 38.4px Montserrat, sans-serif",
+          "text": "About Me",
+          "width": 335
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    "Recreation": {
+      "heading": [
+        {
+          "font": "700 32px / 38.4px Montserrat, sans-serif",
+          "text": "About Me",
+          "width": 335
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    }
+  },
+  {
+    "route": "/contact/",
+    "Reference": {
+      "heading": [
+        {
+          "font": "700 30px / 38.7px Montserrat, sans-serif",
+          "text": "Contact",
+          "width": 111.671875
+        },
+        {
+          "font": "700 34px / 40.8px Montserrat, sans-serif",
+          "text": "Get in Touch",
+          "width": 355
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    "Recreation": {
+      "heading": [
+        {
+          "font": "700 30px / 38.7px Montserrat, sans-serif",
+          "text": "Contact",
+          "width": 123.703125
+        },
+        {
+          "font": "700 34px / 40.8px Montserrat, sans-serif",
+          "text": "Get in Touch",
+          "width": 355
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    }
+  },
+  {
+    "route": "/projects/",
+    "Reference": {
+      "heading": [
+        {
+          "font": "700 30px / 38.7px Montserrat, sans-serif",
+          "text": "Archives: Projects",
+          "width": 280.609375
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    "Recreation": {
+      "heading": [
+        {
+          "font": "700 30px / 38.7px Montserrat, sans-serif",
+          "text": "Archives: Projects",
+          "width": 280.578125
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    }
+  },
+  {
+    "route": "/projects/ecommerce-saas-dashboard/",
+    "Reference": {
+      "heading": [
+        {
+          "font": "700 34px / 43.86px Montserrat, sans-serif",
+          "text": "Enhancing User Experience of an e-Commerce SaaS Dashboard",
+          "width": 345
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    "Recreation": {
+      "heading": [
+        {
+          "font": "700 34px / 43.86px Montserrat, sans-serif",
+          "text": "Enhancing User Experience of an e-Commerce SaaS Dashboard",
+          "width": 345
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    }
+  },
+  {
+    "route": "/projects/decentralised-finance-web-mobile-app/",
+    "Reference": {
+      "heading": [
+        {
+          "font": "700 34px / 43.86px Montserrat, sans-serif",
+          "text": "Web 3.0 UX Case Study – Redefining Finance with a Decentralized Web and Mobile Experience",
+          "width": 345
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    "Recreation": {
+      "heading": [
+        {
+          "font": "700 34px / 43.86px Montserrat, sans-serif",
+          "text": "Web 3.0 UX Case Study – Redefining Finance with a Decentralized Web and Mobile Experience",
+          "width": 345
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    }
+  },
+  {
+    "route": "/projects/dwtstore-improved-shopping-experience-on-web-mobile/",
+    "Reference": {
+      "heading": [
+        {
+          "font": "700 34px / 43.86px Montserrat, sans-serif",
+          "text": "Seamless Shopping Experience: Improving User Experience Across DwtStore’s Web and Mobile Platforms",
+          "width": 345
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    "Recreation": {
+      "heading": [
+        {
+          "font": "700 34px / 43.86px Montserrat, sans-serif",
+          "text": "Seamless Shopping Experience: Improving User Experience Across DwtStore’s Web and Mobile Platforms",
+          "width": 345
+        }
+      ],
+      "scrollWidth": 375,
+      "width": 375
+    }
+  }
+]

@@ -1,0 +1,176 @@
+[
+  {
+    "route": "/about/",
+    "originalMetrics": {
+      "font": "700 32px / 38.4px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 256.390625,
+        "height": 38.390625,
+        "left": 642.453125,
+        "right": 1243.984375,
+        "top": 218,
+        "width": 601.53125,
+        "x": 642.453125,
+        "y": 218
+      }
+    },
+    "recreatedMetrics": {
+      "font": "700 32px / 38.4px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 256.390625,
+        "height": 38.390625,
+        "left": 642.453125,
+        "right": 1243.984375,
+        "top": 218,
+        "width": 601.53125,
+        "x": 642.453125,
+        "y": 218
+      }
+    }
+  },
+  {
+    "route": "/contact/",
+    "originalMetrics": {
+      "font": "700 30px / 38.7px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 171.6875,
+        "height": 38.6875,
+        "left": 45,
+        "right": 168.71875,
+        "top": 133,
+        "width": 123.71875,
+        "x": 45,
+        "y": 133
+      }
+    },
+    "recreatedMetrics": {
+      "font": "700 30px / 38.7px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 171.6875,
+        "height": 38.6875,
+        "left": 45,
+        "right": 168.703125,
+        "top": 133,
+        "width": 123.703125,
+        "x": 45,
+        "y": 133
+      }
+    }
+  },
+  {
+    "route": "/projects/ecommerce-saas-dashboard/",
+    "originalMetrics": {
+      "font": "700 44px / 56.76px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 1129.21875,
+        "height": 170.25,
+        "left": 144,
+        "right": 840.65625,
+        "top": 958.96875,
+        "width": 696.65625,
+        "x": 144,
+        "y": 958.96875
+      }
+    },
+    "recreatedMetrics": {
+      "font": "700 44px / 56.76px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 1129.21875,
+        "height": 170.25,
+        "left": 144,
+        "right": 840.65625,
+        "top": 958.96875,
+        "width": 696.65625,
+        "x": 144,
+        "y": 958.96875
+      }
+    }
+  },
+  {
+    "route": "/projects/",
+    "originalMetrics": {
+      "font": "700 30px / 38.7px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 171.6875,
+        "height": 38.6875,
+        "left": 45,
+        "right": 325.609375,
+        "top": 133,
+        "width": 280.609375,
+        "x": 45,
+        "y": 133
+      }
+    },
+    "recreatedMetrics": {
+      "font": "700 30px / 38.7px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 171.6875,
+        "height": 38.6875,
+        "left": 45,
+        "right": 325.578125,
+        "top": 133,
+        "width": 280.578125,
+        "x": 45,
+        "y": 133
+      }
+    }
+  },
+  {
+    "route": "/projects/decentralised-finance-web-mobile-app/",
+    "originalMetrics": {
+      "font": "700 44px / 56.76px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 1186.65625,
+        "height": 227,
+        "left": 144,
+        "right": 840.65625,
+        "top": 959.65625,
+        "width": 696.65625,
+        "x": 144,
+        "y": 959.65625
+      }
+    },
+    "recreatedMetrics": {
+      "font": "700 44px / 56.76px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 1186.65625,
+        "height": 227,
+        "left": 144,
+        "right": 840.65625,
+        "top": 959.65625,
+        "width": 696.65625,
+        "x": 144,
+        "y": 959.65625
+      }
+    }
+  },
+  {
+    "route": "/projects/dwtstore-improved-shopping-experience-on-web-mobile/",
+    "originalMetrics": {
+      "font": "700 44px / 56.76px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 1236.109375,
+        "height": 227,
+        "left": 144,
+        "right": 840.65625,
+        "top": 1009.109375,
+        "width": 696.65625,
+        "x": 144,
+        "y": 1009.109375
+      }
+    },
+    "recreatedMetrics": {
+      "font": "700 44px / 56.76px Montserrat, sans-serif",
+      "heading": {
+        "bottom": 1236.421875,
+        "height": 227,
+        "left": 144,
+        "right": 840.65625,
+        "top": 1009.421875,
+        "width": 696.65625,
+        "x": 144,
+        "y": 1009.421875
+      }
+    }
+  }
+]

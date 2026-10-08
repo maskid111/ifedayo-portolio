@@ -1,0 +1,161 @@
+:root {
+  --color-primary: #2563eb;
+  --color-subtitle: #2563eb;
+}
+
+.ifedayo-logo {
+  display: block;
+  width: auto;
+  max-width: 150px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.popup-mobile-menu .ifedayo-logo {
+  max-width: 140px;
+  height: 46px;
+}
+
+.section-title .subtitle,
+.section-title .sub-title,
+.breadcrumb-inner .title,
+.breadcrumb-inner .title span {
+  color: #2563eb !important;
+}
+
+.ifedayo-main-photo,
+.ifedayo-about-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ifedayo-about-photo {
+  aspect-ratio: 1;
+  border-radius: 18px;
+}
+
+.menu-item-5232,
+.ifedayo-hidden-cv {
+  display: none !important;
+}
+
+.social-share .github a,
+.social-share .telegram a {
+  text-decoration: none;
+}
+
+.ifedayo-project-card .inner {
+  height: 100%;
+}
+
+.portfolio-style-three.rainbow-blog-area.rn-section-gap {
+  padding-top: 10px;
+}
+
+.ifedayo-projects-page-heading {
+  margin-bottom: 12px;
+}
+
+.ifedayo-project-card .thumbnail a {
+  display: block;
+}
+
+.ifedayo-project-thumb {
+  position: relative;
+  min-height: 270px;
+  overflow: hidden;
+  border-radius: 10px;
+  color: #fff;
+  isolation: isolate;
+  background: #151515;
+}
+
+.ifedayo-project-thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(135deg, #151515, #2a2a2f);
+  opacity: .16;
+}
+
+.ifedayo-project-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .08) 0%, rgba(0, 0, 0, .38) 58%, rgba(0, 0, 0, .76) 100%);
+}
+
+.ifedayo-project-preview {
+  display: block;
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+  object-position: top center;
+  transform: scale(1.01);
+  transition: transform .45s ease;
+}
+
+.ifedayo-project-card:hover .ifedayo-project-preview {
+  transform: scale(1.06);
+}
+
+.ifedayo-project-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  padding: 28px;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.ifedayo-project-thumb span {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  color: rgba(255, 255, 255, .72);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ifedayo-project-thumb strong {
+  color: #fff;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.05;
+}
+
+.ifedayo-project-thumb small {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, .78);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.ifedayo-tone-amber::before { background: linear-gradient(135deg, #16120c, #b8862d); }
+.ifedayo-tone-rose::before { background: linear-gradient(135deg, #231016, #d14f72); }
+.ifedayo-tone-blue::before { background: linear-gradient(135deg, #111827, #3178c6); }
+.ifedayo-tone-green::before { background: linear-gradient(135deg, #0f1f18, #2ea36a); }
+.ifedayo-tone-violet::before { background: linear-gradient(135deg, #171225, #7c4dff); }
+.ifedayo-tone-cyan::before { background: linear-gradient(135deg, #0d1b20, #1aa6b7); }
+.ifedayo-tone-orange::before { background: linear-gradient(135deg, #111827, #2563eb); }
+.ifedayo-tone-pink::before { background: linear-gradient(135deg, #221018, #e45c9d); }
+
+.ifedayo-project-card .category-list span {
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.ifedayo-project-summary {
+  margin: 12px 0 0;
+  color: var(--color-body);
+  font-size: 15px;
+  line-height: 1.65;
+}

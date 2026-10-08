@@ -1,0 +1,21 @@
+{
+  "count": 206,
+  "failures": [
+    {
+      "url": "https://dawatechonline.com/wp-content/themes/inbio/assets/images/icones/shape1.svg",
+      "error": "404 Client Error: Not Found for url: https://dawatechonline.com/wp-content/themes/inbio/assets/images/icones/shape1.svg"
+    },
+    {
+      "url": "https://dawatechonline.com/wp-content/themes/inbio/assets/images/icons/short-arrow-left.png",
+      "error": "404 Client Error: Not Found for url: https://dawatechonline.com/wp-content/themes/inbio/assets/images/icons/short-arrow-left.png"
+    },
+    {
+      "url": "https://dawatechonline.com/wp-content/themes/inbio/assets/images/icons/quote2.png",
+      "error": "404 Client Error: Not Found for url: https://dawatechonline.com/wp-content/themes/inbio/assets/images/icons/quote2.png"
+    },
+    {
+      "url": "https://dawatechonline.com/wp-content/themes/inbio/assets/images/icons/short-arrow-right.png",
+      "error": "404 Client Error: Not Found for url: https://dawatechonline.com/wp-content/themes/inbio/assets/images/icons/short-arrow-right.png"
+    }
+  ]
+}
