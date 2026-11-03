@@ -1,4 +1,5 @@
 import {services} from './services.js';
+import './projects.js';
 function initialize(){
  let activeModal=null,modalTrigger=null,backdrop=null;
  function closeModal(){if(!activeModal)return;activeModal.classList.remove('show');activeModal.style.display='none';activeModal.setAttribute('aria-hidden','true');activeModal.removeAttribute('aria-modal');document.body.classList.remove('modal-open');backdrop?.remove();activeModal=null;modalTrigger?.focus();}

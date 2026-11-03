@@ -1,9 +1,12 @@
 import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-const root=path.resolve('dist');
+import { fileURLToPath } from 'node:url';
+const root=path.resolve(fileURLToPath(new URL('../dist/',import.meta.url)));
 const args=process.argv.slice(2);
-const requestedPort=Number(process.env.PORT || args[args.indexOf('--port')+1] || 4173);
+const portIndex=args.indexOf('--port');
+const requestedPort=Number(portIndex>=0 ? args[portIndex+1] : process.env.PORT || 4185);
+if(!Number.isInteger(requestedPort)||requestedPort<1||requestedPort>65535)throw Error('Please provide a valid port between 1 and 65535.');
 const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.webp':'image/webp','.gif':'image/gif'};
 function createServer(){
  return http.createServer(async(req,res)=>{
@@ -25,6 +28,6 @@ function listen(port){
   }
   throw error;
  });
- server.listen(port,'0.0.0.0',()=>console.log(`Serving on http://localhost:${port}`));
+ server.listen(port,'0.0.0.0',()=>console.log(`\nIfedayo Portfolio\nWebsite: http://localhost:${port}/\nAdmin:   http://localhost:${port}/admin/\nServing files from: ${root}\n`));
 }
 listen(requestedPort);

@@ -1,74 +1,13 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { builtInProjects } from '../src/app/project-catalog.js';
 
 const root = process.cwd();
 
-const projects = [
-  {
-    slug: 'aimabluxe',
-    name: 'Aimabluxe',
-    url: 'https://www.aimabluxe.com/',
-    type: 'Brand Website',
-    summary: 'Luxury-focused web experience with a polished storefront feel.',
-    tone: 'amber',
-  },
-  {
-    slug: 'teamzadore',
-    name: 'Teamzadore',
-    url: 'https://deftgfx.github.io/Teamz-Adore/',
-    type: 'Creative Website',
-    summary: 'A public web presence for Teamz Adore with visual-forward presentation.',
-    tone: 'rose',
-  },
-  {
-    slug: 'maskid-portfolio',
-    name: 'Maskid Portfolio',
-    url: 'https://maskid.site',
-    type: 'Personal Portfolio',
-    summary: 'Portfolio hub for showcasing creative, technical, and digital work.',
-    tone: 'blue',
-  },
-  {
-    slug: 'malete-hostel',
-    name: 'Malete Hostel',
-    url: 'https://maskid111.github.io/maletehostel/',
-    type: 'Web App',
-    summary: 'A hostel discovery interface built around student accommodation needs.',
-    tone: 'green',
-  },
-  {
-    slug: 'judgelayer',
-    name: 'JudgeLayer',
-    url: 'https://judgelayer.vercel.app/',
-    type: 'Blockchain Product',
-    summary: 'A blockchain-facing product experience for trust, judgement, and verification workflows.',
-    tone: 'violet',
-  },
-  {
-    slug: 'echomap',
-    name: 'Echomap',
-    url: 'https://echomapxyz.vercel.app/',
-    type: 'Interactive Product',
-    summary: 'A digital product experiment with mapping, discovery, and interaction at its core.',
-    tone: 'cyan',
-  },
-  {
-    slug: 'seismic-flyer-generator',
-    name: 'Seismic Flyer Generator',
-    url: 'https://seismicflyer.vercel.app/',
-    type: 'Design Tool',
-    summary: 'A browser-based generator for quickly producing Seismic-styled flyer visuals.',
-    tone: 'orange',
-  },
-  {
-    slug: 'birthday-vault',
-    name: 'Birthday Vault',
-    url: 'https://jummy26.vercel.app/',
-    type: 'Celebration Website',
-    summary: 'A warm, memorable digital birthday experience built for sharing and surprise.',
-    tone: 'pink',
-  },
-];
+const projects = builtInProjects.map(project => ({
+ slug:project.id, name:project.name, url:project.liveUrl, type:project.category,
+ summary:project.description, tone:project.tone,
+}));
 
 function card(project, index, mode) {
   const column = mode === 'home'
