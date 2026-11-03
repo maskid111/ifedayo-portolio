@@ -1,5 +1,6 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { landingBio, homeStatsMarkup } from '../src/app/home-copy.js';
 
 const root = process.cwd();
 const htmlRoot = path.join(root, 'dist');
@@ -13,7 +14,6 @@ const telegram = 'https://t.me/iammaskid';
 const x = 'https://x.com/deft_gfx';
 const whatsapp = 'https://wa.me/2348088188986';
 
-const landingBio = 'I specialise in building digital products and experiences that combine <strong>technology, creativity, and visual communication</strong>. With experience across full-stack development, blockchain technology, graphic design, and content creation, I enjoy taking ideas from concept to execution. I’m passionate about solving problems through technology, creating intuitive and visually engaging experiences, and exploring emerging technologies to build things that are both useful and impactful. Whether I’m developing a web application, building on the blockchain, designing visual content, or creating educational and engaging content, I strive to deliver work that is thoughtful, functional, and memorable.';
 
 const aboutBio = 'I’m a <strong>Full-Stack Developer, Blockchain Developer, Graphic Designer, and Content Creator</strong> who enjoys turning ideas into things people can actually use, see, and experience. I work across technology and design, building digital products, exploring blockchain, creating visual identities, and producing content that makes complex ideas easier to understand.<br/><br/>My journey in tech has been driven largely by curiosity and a desire to keep learning. I enjoy taking an idea, figuring out how it can work, and then bringing it to life, whether that means writing code, designing an interface, creating graphics, or experimenting with a new technology. I care about both how something works and how it looks, and I’m always looking for ways to make what I create more useful, engaging, and memorable.<br/><br/>Over time, I’ve had the opportunity to work on different kinds of projects, explore emerging technologies, and contribute to growing communities through both my technical and creative work. These experiences have helped me develop a mindset that goes beyond simply completing a project, I want to understand the problem, experiment with different approaches, and create something that genuinely adds value.<br/><br/>I’m constantly learning, building, and experimenting with new ideas. Whether I’m developing a product, working with blockchain technology, designing visuals, or creating content, my goal is to keep pushing my skills forward and <strong>build things that matter.</strong>';
 
@@ -128,6 +128,8 @@ function replacePageCopy(html, file) {
 </span>
 </h1>`);
     html = html.replace(/<p class="description"><span>[\s\S]*?<\/span><\/p>/, `<p class="description"><span>${landingBio}</span></p>`);
+    if (!html.includes('id="publishedProjectCount"')) html = html.replace(`<p class="description"><span>${landingBio}</span></p>`, `<p class="description"><span>${landingBio}</span></p>\n${homeStatsMarkup}`);
+    if (!html.includes('/app/stats.js')) html = html.replace('</body>', '<script src="/app/stats.js" type="module"></script></body>');
     html = html.replace(/"post":\{"id":7,"title":"[^"]+"/, '"post":{"id":7,"title":"Adeyemo%20Muiz%20Ifedayo%20%E2%80%93%20Full-Stack%20Developer%20%7C%20Blockchain%20Developer"');
   }
 

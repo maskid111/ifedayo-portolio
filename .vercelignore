@@ -1,5 +1,7 @@
 requirements.txt
 source-reference/
 verification/
+.env
+.env.*
 scripts/recreate.py
 scripts/finalize.py

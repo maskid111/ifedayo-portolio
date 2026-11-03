@@ -2,6 +2,7 @@ import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import githubStats from '../api/github-stats.js';
 const root=path.resolve(fileURLToPath(new URL('../dist/',import.meta.url)));
 const args=process.argv.slice(2);
 const portIndex=args.indexOf('--port');
@@ -11,6 +12,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/ja
 function createServer(){
  return http.createServer(async(req,res)=>{
  try{
+ if(new URL(req.url,'http://localhost').pathname==='/api/github-stats'){await githubStats(req,res);return;}
  let file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));
  if(!file.startsWith(root+path.sep)&&file!==root)throw Error('Invalid path');
  if((await stat(file)).isDirectory())file=path.join(file,'index.html');
