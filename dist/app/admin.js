@@ -1,4 +1,6 @@
 import { migrateBuiltInProjects } from './project-migration.js';
+import { migrateDeveloperProjects } from './developer-migration.js';
+import {projectTrack} from './developer-catalog.js';
 const $ = selector => document.querySelector(selector);
 const form = $('#projectForm');
 const dialog = $('#projectDialog');
@@ -27,7 +29,7 @@ function safeUrl(value) {
  try { const url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch { return ''; }
 }
 function safePreview(value) {
- return /^\/assets\/project-previews\/[a-z0-9-]+\.png$/.test(value || '') ? value : safeUrl(value);
+ return /^\/assets\/project-previews\/[a-z0-9-]+\.(?:png|jpg)$/.test(value || '') ? value : safeUrl(value);
 }
 function setView(view) {
  const inbox = view === 'messages';
@@ -48,7 +50,7 @@ function stats() {
 }
 function renderProjects() {
  const search = $('#projectSearch').value.trim().toLowerCase(), filter = $('#projectFilter').value;
- const visible = projects.filter(p => (p.name + ' ' + p.category + ' ' + p.description).toLowerCase().includes(search) && (filter === 'all' || filter === 'featured' && p.featured || filter === 'published' && p.published !== false || filter === 'draft' && p.published === false));
+ const visible = projects.filter(p => (p.name + ' ' + p.category + ' ' + p.description).toLowerCase().includes(search) && (filter === 'all' || ['web2','web3'].includes(filter)&&projectTrack(p)===filter || filter === 'featured' && p.featured || filter === 'published' && p.published !== false || filter === 'draft' && p.published === false));
  $('#projectCount').textContent = projects.length;
  $('#projectsList').innerHTML = visible.map(project => {
   const url = safeUrl(project.liveUrl || project.url), preview = safePreview(firebase.previewUrlFor(project));
@@ -76,6 +78,9 @@ function openEditor(project) {
  form.elements.published.value = project?.published === false ? 'false' : 'true';
  for(const field of ['name','category','description','liveUrl','previewUrl']) form.elements[field].value = project?.[field] || (field === 'liveUrl' ? project?.url : '') || '';
  form.elements.featured.checked = !!project?.featured;
+ form.elements.track.value=project?projectTrack(project):'web2';
+ form.elements.codeUrl.value=project?.codeUrl||'';
+ form.elements.stack.value=Array.isArray(project?.stack)?project.stack.join(', '):'';
  $('#formTitle').textContent = project ? 'Edit project' : 'Add project';
  $('#formError').hidden = true;
  form.querySelector('details').open = !!project?.previewUrl;
@@ -109,10 +114,11 @@ async function startWorkspace(user) {
  $('#addProjectBtn').disabled = true;
  try {
   const count = await migrateBuiltInProjects(firebase, user);
+  const developerCount=await migrateDeveloperProjects(firebase,user);
   if (activeUser !== user) return;
   status.hidden = true;
   $('#addProjectBtn').disabled = false;
-  if(count) notify(count + ' existing website projects are now ready to manage.');
+  if(count||developerCount) notify('Your Web2 and Web3 projects are ready to manage.');
  } catch(error) {
   if (activeUser !== user) return;
   $('#catalogStatusText').textContent = 'Your existing projects could not be imported. ' + errorMessage(error);
@@ -153,6 +159,8 @@ form.addEventListener('submit', async event => {
  const {doc,collection,db,serverTimestamp,setDoc} = firebase;
  const reference = editing ? doc(db,'projects',data.id) : doc(collection(db,'projects'));
  const payload = {name, category, description, liveUrl, previewUrl, order, featured:form.elements.featured.checked, published:data.published==='true',updatedAt:serverTimestamp(),updatedBy:activeUser.email};
+ if(data.codeUrl.trim()&&!safeUrl(data.codeUrl)){error.textContent='Use a complete HTTPS source code link.';error.hidden=false;return;}
+ payload.track=data.track==='web3'?'web3':'web2';payload.codeUrl=safeUrl(data.codeUrl);payload.stack=data.stack.split(',').map(item=>item.trim()).filter(Boolean).slice(0,12);
  const existing = projects.find(project => project.id === data.id);
  if(existing?.previewPath && safeUrl(existing.liveUrl || existing.url) !== liveUrl) payload.previewPath = '';
  if(!editing) payload.createdAt = serverTimestamp();

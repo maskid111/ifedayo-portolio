@@ -67,22 +67,23 @@ const source=await readFile(new URL('../src/app/projects.js',import.meta.url),'u
 const transformed=source.replace(/import \{[\s\S]*?\} from '\.\/firebase-client.js';/,
  'const {collection,db,getDocs,previewUrlFor}=globalThis.projectTestFirebase;')
  .replace("'./project-catalog.js'",JSON.stringify(new URL('../src/app/project-catalog.js',import.meta.url).href))
+ .replace("'./developer-catalog.js'",JSON.stringify(new URL('../src/app/developer-catalog.js',import.meta.url).href))
  .replace(/hydrateProjects\(\);\s*$/,'');
 globalThis.projectTestFirebase={collection:()=>({}),db:{},getDocs:async()=>({docs:globalThis.projectTestDocuments.map(project=>({id:project.id,data:()=>project}))}),previewUrlFor:project=>project.previewPath||''};
 const {hydrateProjects}=await import('data:text/javascript;base64,'+Buffer.from(transformed).toString('base64'));
 function page(documents){
  globalThis.projectTestDocuments=documents;
  const container=()=>({innerHTML:'ORIGINAL STATIC CARDS',setAttribute(){},removeAttribute(){}});
- const home=container(),archive=container();
- globalThis.document={querySelector:selector=>selector==='.rbt-portfolio-replace-area'?home:archive};
- return {home,archive};
+ const home=container(),archive=container(),web3=container(),homeWeb3=container();
+ globalThis.document={querySelector:selector=>({'.rbt-portfolio-replace-area':home,'.project-archive-wrapper .row.row--25':archive,'[data-web3-projects]':web3,'[data-home-web3]':homeWeb3})[selector]||null};
+ return {home,archive,web3,homeWeb3};
 }
 test('unfeaturing all projects empties homepage while preserving the Projects page',async()=>{
  const {home,archive}=page([{id:CATALOG_MARKER_ID},...builtInProjects.map(p=>({...p,featured:false}))]);
  await hydrateProjects();
  assert.match(home.innerHTML,/More featured work coming soon/);
  assert.doesNotMatch(home.innerHTML,/ORIGINAL STATIC CARDS|ifedayo-project-card/);
- assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,8);
+ assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,6);
 });
 test('deleting all projects keeps both pages empty instead of restoring static cards',async()=>{
  const {home,archive}=page([{id:CATALOG_MARKER_ID}]);
@@ -95,11 +96,20 @@ test('drafts are absent publicly and featured projects follow display order',asy
  await hydrateProjects();
  assert.doesNotMatch(home.innerHTML+archive.innerHTML,/Aimabluxe/);
  assert.ok(home.innerHTML.indexOf('Malete Hostel')<home.innerHTML.indexOf('Teamzadore'));
- assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,7);
+ assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,5);
 });
 test('unmigrated empty database retains the original portfolio for first-time setup',async()=>{
  const {home,archive}=page([]);
  await hydrateProjects();
  assert.equal(home.innerHTML,'ORIGINAL STATIC CARDS');
  assert.equal(archive.innerHTML,'ORIGINAL STATIC CARDS');
+});
+
+test('Web3 builds are separated from the primary Web2 page and homepage',async()=>{
+ const {home,archive,web3,homeWeb3}=page([{id:CATALOG_MARKER_ID},...builtInProjects.map(project=>({...project,featured:true}))]);
+ await hydrateProjects();
+ assert.doesNotMatch(home.innerHTML+archive.innerHTML,/JudgeLayer|Echomap/);
+ assert.match(web3.innerHTML,/JudgeLayer/);assert.match(web3.innerHTML,/Echomap/);
+ assert.match(homeWeb3.innerHTML,/JudgeLayer/);
+ assert.doesNotMatch(web3.innerHTML,/Aimabluxe/);
 });

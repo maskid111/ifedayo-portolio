@@ -63,7 +63,7 @@ export function slugify(value) {
 
 export function previewUrlFor(project) {
   if (project.previewUrl) return project.previewUrl;
-  if (/^\/assets\/project-previews\/[a-z0-9-]+\.png$/.test(project.previewPath || '')) return project.previewPath;
+  if (/^\/assets\/project-previews\/[a-z0-9-]+\.(?:png|jpg)$/.test(project.previewPath || '')) return project.previewPath;
   const liveUrl = project.liveUrl || project.url;
   if (!liveUrl) return "";
   return `https://api.microlink.io/?url=${encodeURIComponent(liveUrl)}&screenshot=true&meta=false&embed=screenshot.url`;

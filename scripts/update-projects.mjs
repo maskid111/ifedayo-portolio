@@ -1,10 +1,11 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { builtInProjects } from '../src/app/project-catalog.js';
+import {developerProjects,projectTrack} from '../src/app/developer-catalog.js';
 
 const root = process.cwd();
 
-const projects = builtInProjects.map(project => ({
+const projects = builtInProjects.map(project=>({...project,...developerProjects.find(item=>item.id===project.id)})).filter(project=>projectTrack(project)==='web2').map(project => ({
  slug:project.id, name:project.name, url:project.liveUrl, type:project.category,
  summary:project.description, tone:project.tone,
 }));

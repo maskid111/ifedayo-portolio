@@ -31,6 +31,27 @@ chat. The endpoint never asks GitHub for repository names, files, commit bodies,
 or messages and never sends the token or raw GitHub responses to visitors.
 The token must belong to maskid111; other accounts are rejected.
 
+## If contributions show zero
+
+A repository count and a contribution count are different. The contribution
+counter is GitHub's calendar total for the current UTC year, not your lifetime
+commits or your total repositories. A real zero returned by GitHub is preserved.
+
+1. On your GitHub profile, open **Contribution settings** and enable **Private
+   contributions** if you want anonymous private activity totals visible.
+   Also ensure the overall GitHub profile is public; making the entire profile
+   private can hide the contribution activity even when this setting is enabled.
+2. Verify your token belongs to **maskid111**, covers the intended repositories,
+   is unexpired, and has any required organization approval.
+3. Check that your Git commit email is associated with your GitHub account and
+   that your commits reached the default or `gh-pages` branch. GitHub may take
+   up to 24 hours to credit an eligible contribution.
+4. Compare `/api/github-stats` on your deployed site with the matching year on
+   your GitHub contribution calendar. Allow five minutes for this site's cache.
+   Do not send the token or raw private repository responses for debugging.
+
+See https://docs.github.com/en/account-and-profile/how-tos/contribution-settings/troubleshooting-missing-contributions
+
 ## Refreshing and local testing
 
 The browser refreshes the GitHub counters every five minutes while visible and

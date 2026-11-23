@@ -1,6 +1,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { landingBio, homeStatsMarkup } from '../src/app/home-copy.js';
+import { updateSocialMetadata } from './update-social-meta.mjs';
 
 const root = process.cwd();
 const htmlRoot = path.join(root, 'dist');
@@ -112,7 +113,7 @@ function addWhatsApp(html) {
 }
 
 function replacePageCopy(html, file) {
-  if (file.endsWith(path.join('dist', 'index.html'))) {
+  if (file.endsWith(path.join('dist', 'index.html')) && !html.includes('data-developer-hero')) {
     html = html.replace(/<span class="subtitle">[\s\S]*?<\/span>/, '<span class="subtitle">Hi there! 👋</span>');
     html = html.replace(/<h1 class="title">[\s\S]*?<\/h1>/, `<h1 class="title">I’m <span>${publicName}</span><br/>
 <span class="header-caption">
@@ -128,12 +129,13 @@ function replacePageCopy(html, file) {
 </span>
 </h1>`);
     html = html.replace(/<p class="description"><span>[\s\S]*?<\/span><\/p>/, `<p class="description"><span>${landingBio}</span></p>`);
-    if (!html.includes('id="publishedProjectCount"')) html = html.replace(`<p class="description"><span>${landingBio}</span></p>`, `<p class="description"><span>${landingBio}</span></p>\n${homeStatsMarkup}`);
+    html = html.replace(/<section class="ifedayo-work-stats"[\s\S]*?<\/section>\s*(?:<p id="githubStatsNote"[\s\S]*?<\/p>)?/, '');
+    html = html.replace(`<p class="description"><span>${landingBio}</span></p>`, `<p class="description"><span>${landingBio}</span></p>\n${homeStatsMarkup}`);
     if (!html.includes('/app/stats.js')) html = html.replace('</body>', '<script src="/app/stats.js" type="module"></script></body>');
     html = html.replace(/"post":\{"id":7,"title":"[^"]+"/, '"post":{"id":7,"title":"Adeyemo%20Muiz%20Ifedayo%20%E2%80%93%20Full-Stack%20Developer%20%7C%20Blockchain%20Developer"');
   }
 
-  if (file.endsWith(path.join('about', 'index.html'))) {
+  if (file.endsWith(path.join('about', 'index.html')) && !html.includes('data-developer-about')) {
     html = html.replace(/<p class="p1">[\s\S]*?<\/p>\s*<\/div>/, `<p class="p1">${aboutBio}</p> </div>`);
     html = html.replace(/<div class="button-group text-left">\s*<a class="rn-btn rbbtn rn-single btn-medium shadow-has" href="#" target="_blank"> DOWNLOAD MY CV<\/a>\s*<\/div>/, '<div class="button-group text-left ifedayo-hidden-cv"></div>');
     html = html.replace(/"post":\{"id":3730,"title":"[^"]+"/, '"post":{"id":3730,"title":"About%20%E2%80%93%20Adeyemo%20Muiz%20Ifedayo"');
@@ -152,6 +154,7 @@ function getPageSlug(file) {
   if (file.endsWith(path.join('dist', 'index.html'))) return 'home';
   if (file.endsWith(path.join('about', 'index.html'))) return 'about';
   if (file.endsWith(path.join('projects', 'index.html'))) return 'projects';
+  if (file.endsWith(path.join('web3', 'index.html'))) return 'web3';
   if (file.endsWith(path.join('contact', 'index.html'))) return 'contact';
   return '';
 }
@@ -162,6 +165,7 @@ function navItem(slug, label, href, activeSlug) {
   const ids = {
     home: '5229',
     projects: '5231',
+    web3: '5238',
     contact: '5234',
     about: '5230',
   };
@@ -178,6 +182,7 @@ function replaceNavigation(html, file) {
   const items = [
     ['home', 'Home', '/'],
     ['projects', 'Projects', '/projects/'],
+    ['web3', 'Web3', '/web3/'],
     ['contact', 'Contact', '/contact/'],
     ['about', 'About Me', '/about/'],
   ];
@@ -258,3 +263,4 @@ const packagePath = path.join(root, 'package.json');
 const pkg = JSON.parse(await readFile(packagePath, 'utf8'));
 pkg.name = 'ifedayo-portfolio';
 await writeFile(packagePath, `${JSON.stringify(pkg)}\n`);
+await updateSocialMetadata();

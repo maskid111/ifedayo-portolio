@@ -5,6 +5,7 @@ import {
  previewUrlFor,
 } from './firebase-client.js';
 import { catalogState } from './project-catalog.js';
+import {projectTrack} from './developer-catalog.js';
 
 const tones=['amber','rose','blue','green','violet','cyan','orange','pink'];
 
@@ -43,6 +44,8 @@ ${preview?`<img class="ifedayo-project-preview" src="${escapeHtml(preview)}" alt
 <div class="category-info"><div class="category-list"><span>${category}</span></div></div>
 <h4 class="title"><a href="${escapeHtml(liveUrl)}" target="_blank" rel="noopener noreferrer">${name} <i class="feather-arrow-up-right"></i></a></h4>
 <p class="ifedayo-project-summary">${description}</p>
+${Array.isArray(project.stack)?`<div class="project-tech-stack">${project.stack.map(item=>`<span>${escapeHtml(item)}</span>`).join('')}</div>`:''}
+${project.codeUrl&&/^https:\/\//.test(project.codeUrl)?`<a class="project-source-link" href="${escapeHtml(project.codeUrl)}" target="_blank" rel="noopener noreferrer">View source <i class="feather-arrow-up-right"></i></a>`:''}
 </div>
 </div>
 </div>
@@ -57,18 +60,36 @@ async function loadProjects(){
 export async function hydrateProjects(){
  const homeContainer=document.querySelector('.rbt-portfolio-replace-area');
  const archiveContainer=document.querySelector('.project-archive-wrapper .row.row--25');
- if(!homeContainer&&!archiveContainer)return;
- const containers=[homeContainer,archiveContainer].filter(Boolean);
+ const web3Container=document.querySelector('[data-web3-projects]');
+ const homeWeb3=document.querySelector('[data-home-web3]');
+ if(!homeContainer&&!archiveContainer&&!web3Container)return;
+ const containers=[homeContainer,archiveContainer,web3Container,homeWeb3].filter(Boolean);
  const originalMarkup=containers.map(container=>container.innerHTML);
  containers.forEach(container=>{container.setAttribute('aria-busy','true');container.innerHTML='<p class="col-12">Loading projects…</p>';});
  try{
   const {projects,managed}=await loadProjects();
   if(!managed){containers.forEach((container,index)=>{container.innerHTML=originalMarkup[index];});return;}
+  const hero=document.querySelector('[data-hero-project]');
+  if(hero){
+   const web2=projects.filter(project=>projectTrack(project)==='web2');
+   const selected=web2.find(project=>project.featured)||web2[0];
+   const visual=document.querySelector('[data-hero-visual]');
+   if(visual)visual.hidden=!selected;
+   if(selected){
+    const url=selected.liveUrl||selected.url;
+    if(/^https:\/\//.test(url)){hero.href=url;document.querySelector('[data-hero-host]').textContent=new URL(url).hostname;}
+    hero.setAttribute('aria-label','Explore '+selected.name+', a live Web2 build');
+    document.querySelector('[data-hero-title]').textContent=selected.name;
+    const image=document.querySelector('[data-hero-image]');image.src=previewUrlFor(selected);image.alt=selected.name+' website preview';
+   }
+  }
   if(homeContainer){
-   const featured=projects.filter(project=>project.featured).slice(0,4);
+   const featured=projects.filter(project=>project.featured&&projectTrack(project)==='web2').slice(0,4);
    homeContainer.innerHTML=featured.map((project,index)=>card(project,index,'home')).join('')||'<p class="col-12">More featured work coming soon.</p>';
   }
-  if(archiveContainer)archiveContainer.innerHTML=projects.map((project,index)=>card(project,index,'projects')).join('')||'<p class="col-12">New projects coming soon.</p>';
+  if(archiveContainer)archiveContainer.innerHTML=projects.filter(project=>projectTrack(project)==='web2').map((project,index)=>card(project,index,'projects')).join('')||'<p class="col-12">New projects coming soon.</p>';
+  if(web3Container)web3Container.innerHTML=projects.filter(project=>projectTrack(project)==='web3').map((project,index)=>card(project,index,'projects')).join('')||'<p class="col-12">New onchain projects coming soon.</p>';
+  if(homeWeb3)homeWeb3.innerHTML=projects.filter(project=>project.featured&&projectTrack(project)==='web3').slice(0,2).map((project,index)=>card(project,index,'home')).join('');
  }catch(error){
   containers.forEach(container=>{container.innerHTML='<p class="col-12">Projects could not be loaded. Please refresh to try again.</p>';});
   console.warn('Could not load Firestore projects.',error);

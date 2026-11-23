@@ -2,10 +2,11 @@ const projectCount=document.querySelector('#publishedProjectCount');
 const repositoryCount=document.querySelector('#githubRepositoryCount');
 const contributionCount=document.querySelector('#githubContributionCount');
 const githubNote=document.querySelector('#githubStatsNote');
+const githubState=document.querySelector('#githubStatsState');
 const formatter=new Intl.NumberFormat();
 
 function number(element,value) {
- if(element && Number.isSafeInteger(value) && value>=0)element.textContent=formatter.format(value);
+ if(element && Number.isSafeInteger(value) && value>=0){element.textContent=formatter.format(value);const label=element.getAttribute('aria-label')?.split(':')[0];if(label)element.setAttribute('aria-label',label+': '+formatter.format(value));}
 }
 let githubLoading=false;
 async function refreshGitHub() {
@@ -18,10 +19,14 @@ async function refreshGitHub() {
   if(![totals.repositoryCount,totals.contributionsThisYear].every(n=>Number.isSafeInteger(n)&&n>=0) || totals.year!==new Date().getUTCFullYear())throw Error('Invalid totals');
   number(repositoryCount,totals.repositoryCount);
   number(contributionCount,totals.contributionsThisYear);
-  githubNote.textContent='GitHub totals refresh every few minutes. Only numbers are shared.';
+  document.querySelector('#githubContributionLabel').textContent='Contributions · '+totals.year+' ↗';
+  githubNote.textContent=totals.contributionsThisYear===0 ? 'GitHub reports no contributions for '+totals.year+'.' : 'Synced with GitHub. Private details stay private.';
+  githubNote.title=totals.contributionsThisYear===0 ? 'This is GitHub’s calendar total for this year, not a lifetime commit count. Private activity depends on contribution visibility and token access.' : '';
+  githubState.textContent='SYNCED';githubState.dataset.state='synced';
  } catch {
   repositoryCount.textContent='—';contributionCount.textContent='—';
-  githubNote.textContent='GitHub totals are currently unavailable.';
+  githubNote.textContent='GitHub connection unavailable. Showing no estimate.';
+  githubState.textContent='OFFLINE';githubState.dataset.state='offline';
  } finally {githubLoading=false;}
 }
 

@@ -1,3 +1,4 @@
+import {isCatalogMetadata} from './developer-catalog.js';
 // Original portfolio projects, shared by migration and static generation.
 export const CATALOG_MARKER_ID = 'portfolio-catalog-migration-v1';
 export const builtInProjects = [
@@ -100,9 +101,9 @@ export const builtInProjects = [
 ];
 
 export function catalogState(documents) {
- const projects = documents.filter(project => project.id !== CATALOG_MARKER_ID);
+ const projects = documents.filter(project => !isCatalogMetadata(project));
  return {
-  managed: documents.some(project => project.id === CATALOG_MARKER_ID) || projects.length > 0,
+  managed: documents.some(project => isCatalogMetadata(project)) || projects.length > 0,
   projects: projects.filter(project => project.published !== false).sort((a,b) => (Number(a.order)||0)-(Number(b.order)||0) || String(a.id).localeCompare(String(b.id))),
  };
 }
