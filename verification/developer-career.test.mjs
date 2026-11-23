@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {migrateDeveloperProjects} from '../src/app/developer-migration.js';
+import {migrateWeb3Selection} from '../src/app/web3-selection-migration.js';
 import {developerProjects,DEVELOPER_MARKER_ID,projectTrack} from '../src/app/developer-catalog.js';
 import {builtInProjects,catalogState} from '../src/app/project-catalog.js';
 const user={email:'admin@example.test'};
@@ -46,4 +47,28 @@ test('homepage has no portrait and About retains it; new page includes current b
  assert.match(home,/id="publishedProjectCount"/);assert.match(home,/data-developer-hero/);assert.match(web3,/Consensus Hire/);
  for(const project of developerProjects.filter(p=>p.track==='web3')){assert.ok(web3.includes(project.name));assert.ok(web3.includes(project.codeUrl));}
  for(const html of [home,about,web3])assert.ok((html.match(/href="\/web3\/"/g)||[]).length>=2);
+});
+
+test('requested Web3 selection upgrades already-imported projects without duplicates or lost edits',async()=>{
+ const existing={...builtInProjects.find(project=>project.id==='seismic-flyer-generator'),id:'uploaded-seismic',track:'web2',description:'My edited description',published:false,featured:true};
+ const trust={...developerProjects.find(project=>project.id==='trustescrow'),id:'uploaded-trust'};
+ const {firebase,records}=fixture([existing,trust,{id:DEVELOPER_MARKER_ID,kind:'catalog-migration'}]);
+ assert.equal(await migrateWeb3Selection(firebase,user),1);
+ assert.equal(records.get('uploaded-seismic').track,'web3');
+ assert.equal(records.get('uploaded-seismic').published,false);
+ assert.equal(records.get('uploaded-seismic').featured,true);
+ assert.equal(records.get('uploaded-seismic').description,'My edited description');
+ assert.equal([...records.values()].filter(project=>project.liveUrl===trust.liveUrl).length,1);
+ assert.equal([...records.values()].filter(project=>project.liveUrl===existing.liveUrl).length,1);
+ records.get('uploaded-seismic').track='web2';
+ assert.equal(await migrateWeb3Selection(firebase,user),0);
+ assert.equal(records.get('uploaded-seismic').track,'web2');
+});
+test('requested missing Web3 projects import once and stay deleted afterward',async()=>{
+ const {firebase,records}=fixture([]);
+ assert.equal(await migrateWeb3Selection(firebase,user),2);
+ assert.equal(records.get('seismic-flyer-generator').track,'web3');
+ records.delete('trustescrow');
+ assert.equal(await migrateWeb3Selection(firebase,user),0);
+ assert.equal(records.has('trustescrow'),false);
 });

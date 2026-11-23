@@ -83,7 +83,7 @@ test('unfeaturing all projects empties homepage while preserving the Projects pa
  await hydrateProjects();
  assert.match(home.innerHTML,/More featured work coming soon/);
  assert.doesNotMatch(home.innerHTML,/ORIGINAL STATIC CARDS|ifedayo-project-card/);
- assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,6);
+ assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,5);
 });
 test('deleting all projects keeps both pages empty instead of restoring static cards',async()=>{
  const {home,archive}=page([{id:CATALOG_MARKER_ID}]);
@@ -96,7 +96,7 @@ test('drafts are absent publicly and featured projects follow display order',asy
  await hydrateProjects();
  assert.doesNotMatch(home.innerHTML+archive.innerHTML,/Aimabluxe/);
  assert.ok(home.innerHTML.indexOf('Malete Hostel')<home.innerHTML.indexOf('Teamzadore'));
- assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,5);
+ assert.equal((archive.innerHTML.match(/ifedayo-project-card/g)||[]).length,4);
 });
 test('unmigrated empty database retains the original portfolio for first-time setup',async()=>{
  const {home,archive}=page([]);

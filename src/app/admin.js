@@ -1,5 +1,6 @@
 import { migrateBuiltInProjects } from './project-migration.js';
 import { migrateDeveloperProjects } from './developer-migration.js';
+import { migrateWeb3Selection } from './web3-selection-migration.js';
 import {projectTrack} from './developer-catalog.js';
 const $ = selector => document.querySelector(selector);
 const form = $('#projectForm');
@@ -115,10 +116,11 @@ async function startWorkspace(user) {
  try {
   const count = await migrateBuiltInProjects(firebase, user);
   const developerCount=await migrateDeveloperProjects(firebase,user);
+  const selectionCount=await migrateWeb3Selection(firebase,user);
   if (activeUser !== user) return;
   status.hidden = true;
   $('#addProjectBtn').disabled = false;
-  if(count||developerCount) notify('Your Web2 and Web3 projects are ready to manage.');
+  if(count||developerCount||selectionCount) notify('Your Web2 and Web3 projects are ready to manage.');
  } catch(error) {
   if (activeUser !== user) return;
   $('#catalogStatusText').textContent = 'Your existing projects could not be imported. ' + errorMessage(error);
