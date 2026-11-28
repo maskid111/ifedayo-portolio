@@ -1,0 +1,18 @@
+.page-reading-progress{position:fixed;top:0;left:0;width:100%;height:3px;transform:scaleX(0);transform-origin:left;z-index:1000;pointer-events:none;background:linear-gradient(90deg,#2563eb,#65b4ff,#2563eb)}
+.site-nav a,.footer-links a,.developer-section-heading h2,.section-heading h2{position:relative}.site-nav a:not(.nav-contact):after,.footer-links a:after{content:"";position:absolute;bottom:-5px;left:0;right:0;height:2px;background:#2563eb;transform:scaleX(0);transform-origin:left;transition:transform .3s}.site-nav a:hover:after,.footer-links a:hover:after{transform:scaleX(1)}
+@keyframes status-breathe{0%,100%{opacity:.45;box-shadow:0 0 0 0 #2563eb22}50%{opacity:1;box-shadow:0 0 0 6px #2563eb00}}
+@keyframes accent-trace{0%,15%{transform:scaleX(.12);opacity:.3}45%,75%{transform:scaleX(1);opacity:.8}100%{transform:scaleX(.12);opacity:.3}}
+@media(prefers-reduced-motion:no-preference){.developer-eyebrow>span{animation:status-breathe 3s ease-in-out infinite}.hero h1 .accent,.developer-hero h1>span,.web3-intro h1>span{position:relative}.hero h1 .accent:after,.developer-hero h1>span:after,.web3-intro h1>span:after{content:"";position:absolute;bottom:-8px;left:0;right:0;height:2px;background:linear-gradient(90deg,#2563eb,#72b4ff,transparent);transform-origin:left;animation:accent-trace 6s ease-in-out infinite}.hero:before,.developer-hero:before{animation:ambient-grid 24s linear infinite}@keyframes ambient-grid{to{background-position:44px 22px}}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*:before,*:after{animation:none!important;transition:none!important}.js-motion .reveal:not(.in-view){opacity:1!important;transform:none!important}}
+
+/* Compact cards keep the existing silhouette while using two mobile columns. */
+@media(max-width:760px){
+ .content-grid,.destination-grid,.grid-three{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .content-card,.destination-card,.service-card{border-radius:8px;box-shadow:5px 7px 17px #b8c7da45,-4px -4px 12px #fff9}
+ .content-card-body{padding:11px}.content-card-body>p{font-size:12px;line-height:1.65;margin-bottom:10px}
+ .content-poster{min-height:170px;padding:12px}.content-poster h3{font-size:14px;line-height:1.45;margin-bottom:12px;overflow-wrap:anywhere}.poster-top{font-size:10px;margin-bottom:12px;gap:4px}
+ .content-card-actions{flex-wrap:wrap;gap:4px;padding-top:7px}.content-card-actions>a,.content-card-actions .text-button{font-size:11px;white-space:normal;min-height:32px;display:inline-flex;align-items:center}
+ .has-inline-preview .content-card-body{padding:6px 10px}.inline-post-preview{padding:6px;overflow:hidden}.inline-post-status{font-size:10px;line-height:1.5}
+ .destination-body{padding:13px;gap:0}.destination-domain{font-size:10px;margin-bottom:9px;line-height:1.6}.destination-body h3{font-size:20px;margin-bottom:10px;letter-spacing:-.04em}.destination-body p{font-size:12px;line-height:1.7;margin-bottom:14px}.destination-action{font-size:11px;line-height:1.6;padding-top:12px}
+ .service-card{padding:15px}.service-icon{width:35px;height:35px;margin-bottom:15px}.service-card h3{font-size:17px;line-height:1.3;margin-bottom:12px}.service-card p{font-size:12px;line-height:1.7;margin-bottom:12px}.service-card ul{font-size:11px;line-height:1.8;padding-left:14px}
+}

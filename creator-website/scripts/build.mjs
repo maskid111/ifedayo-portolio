@@ -24,7 +24,7 @@ export async function build(){
  await writeFile(path.join(root,'dist/index.html'),html);
  await writeFile(path.join(root,'dist/styles.css'),await readFile(path.join(root,'src/styles.css')));
  await writeFile(path.join(root,'dist/app.js'),await readFile(path.join(root,'src/app.js')));
- for(const file of ['contact.js','firebase-config.js','post-catalog.js','live-posts.js'])await cp(path.join(root,'src',file),path.join(root,'dist',file));
+ for(const file of ['site-motion.js','motion.css','contact.js','firebase-config.js','post-catalog.js','live-posts.js','fit-embeds.js'])await cp(path.join(root,'src',file),path.join(root,'dist',file));
  await writeFile(path.join(root,'dist/robots.txt'),'User-agent: *\nAllow: /\nSitemap: '+config.domain+'/sitemap.xml\n');
  await writeFile(path.join(root,'dist/sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>'+config.domain+'/</loc></url></urlset>');
  console.log('Built '+config.title);

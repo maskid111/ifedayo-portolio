@@ -1,3 +1,4 @@
+import {fitEmbed} from './fit-embeds.js';
 import {connectCreatorPosts,renderPosts} from './live-posts.js';
 const menuButton=document.querySelector('[data-menu-toggle]');
 const nav=document.querySelector('#site-navigation');
@@ -56,9 +57,10 @@ async function renderInlinePost(slot){
  const card=slot.closest('[data-post-type]'),status=slot.querySelector('[role="status"]');
  try{
   const x=await loadX();
+  if(matchMedia('(max-width:760px)').matches)slot.querySelector('.inline-post-host').style.width='330px';
   const widget=await x.widgets.createTweet(slot.dataset.inlinePost,slot.querySelector('.inline-post-host'),{theme:'light',dnt:true,conversation:'none',align:'center'});
   if(!widget)throw Error('Post unavailable');
-  status.hidden=true;card.classList.add('has-inline-preview');
+  status.hidden=true;card.classList.add('has-inline-preview');fitEmbed(slot.querySelector('.inline-post-host'));
  }catch{
   status.textContent='X preview unavailable. Open the original post below.';
  }finally{slot.dataset.loaded='true';}
