@@ -1,0 +1,26 @@
+[
+  {
+    "key": "developer",
+    "preview": "/assets/developer-site-preview.jpg",
+    "title": "Developer",
+    "url": "https://portfolio.maskid.site",
+    "description": "Websites, full-stack applications, and onchain products. Browse Web2 and Web3 builds, live demos, and source code.",
+    "action": "Explore the developer portfolio"
+  },
+  {
+    "key": "trading",
+    "preview": "/assets/trading-site-preview.jpg",
+    "title": "Trading",
+    "url": "https://trading.maskid.site",
+    "description": "The market side of my work. A dedicated space for trading, crypto, forex, research, and analysis.",
+    "action": "Explore the trading portfolio"
+  },
+  {
+    "key": "creator",
+    "preview": "/assets/creator-site-preview.jpg",
+    "title": "Creator",
+    "url": "https://creator.maskid.site",
+    "description": "Videos, threads, and written breakdowns. Explore the content, the voice, and opportunities to collaborate.",
+    "action": "Explore the creator portfolio"
+  }
+]

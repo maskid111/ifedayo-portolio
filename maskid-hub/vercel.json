@@ -1,0 +1,71 @@
+{
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'none'; upgrade-insecure-requests"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/creator",
+      "destination": "https://creator.maskid.site/",
+      "permanent": true
+    },
+    {
+      "source": "/creator/",
+      "destination": "https://creator.maskid.site/",
+      "permanent": true
+    },
+    {
+      "source": "/development",
+      "destination": "https://portfolio.maskid.site/",
+      "permanent": true
+    },
+    {
+      "source": "/development/",
+      "destination": "https://portfolio.maskid.site/",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/#contact",
+      "permanent": true
+    },
+    {
+      "source": "/admin",
+      "destination": "https://portfolio.maskid.site/admin/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/",
+      "destination": "https://portfolio.maskid.site/admin/",
+      "permanent": false
+    }
+  ]
+}

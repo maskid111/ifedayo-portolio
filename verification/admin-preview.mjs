@@ -18,7 +18,8 @@ const projects=[
  {id:'judgelayer',name:'JudgeLayer',category:'Web application',description:'A focused experience for exploring ideas and bringing decisions together.',liveUrl:'https://judgelayer.vercel.app/',previewUrl:'/assets/project-previews/judgelayer.png',order:2,featured:false,published:false}
 ];
 const messages=[{id:'message-1',name:'Preview visitor',email:'visitor@example.test',subject:'Let’s build something together',message:'Hello Ifedayo! I enjoyed exploring your work. I would love to discuss an upcoming website project.',status:'unread',createdAt:stamp}];
-const data={projects,messages};
+messages.push({id:'creator-test',site:'creator',name:'Creator preview',email:'creator@example.test',subject:'Video content',message:'A product explainer video brief for the creator portfolio.',timeline:'Next month',status:'unread',createdAt:stamp},{id:'hub-test',site:'hub',name:'Hub preview',email:'hub@example.test',subject:'Development project',message:'An enquiry from the main hub.',status:'read',createdAt:stamp});
+const creatorPosts=[];const data={projects,messages,creatorPosts};
 export function onAuthStateChanged(a,callback){authCallback=callback;callback(user);}
 export async function signInWithPopup(){authCallback(user);}
 export async function signOut(){authCallback(null);}
@@ -26,10 +27,10 @@ export const collection=(db,name)=>({name});
 export const doc=(source,name,id)=>({name:source.name||name,id:source.name?(name||crypto.randomUUID()):id});
 export const query=ref=>ref;
 export const orderBy=()=>null;
-const snapshot=id=>{const value=projects.find(project=>project.id===id);return {id,exists:()=>!!value,data:()=>value};};
-export const getDoc=async ref=>snapshot(ref.id);
-export const getDocs=async()=>({docs:projects.map(project=>snapshot(project.id))});
-export async function runTransaction(db,work){const writes=[];const result=await work({get:async ref=>snapshot(ref.id),set:(ref,value)=>writes.push([ref,value])});for(const [ref,value]of writes){const old=projects.find(project=>project.id===ref.id);if(old)Object.assign(old,value);else projects.push({...value,id:ref.id});}emit('projects');return result;}
+const snapshot=(ref)=>{const value=(data[ref.name]||[]).find(item=>item.id===ref.id);return {id:ref.id,exists:()=>!!value,data:()=>value};};
+export const getDoc=async ref=>snapshot(ref);
+export const getDocs=async()=>({docs:projects.map(project=>snapshot({name:'projects',id:project.id}))});
+export async function runTransaction(db,work){const writes=[];const result=await work({get:async ref=>snapshot(ref),set:(ref,value)=>writes.push([ref,value]),delete:ref=>writes.push([ref,null])});for(const [ref,value]of writes){const list=data[ref.name]||[];if(value===null){const index=list.findIndex(item=>item.id===ref.id);if(index>=0)list.splice(index,1);continue;}const old=list.find(item=>item.id===ref.id);if(old)Object.assign(old,value);else list.push({...value,id:ref.id});}emit('projects');emit('creatorPosts');return result;}
 function emit(name){listeners.get(name)?.({docs:data[name].filter(p=>name!=='projects'||p.order!==undefined).map(p=>({id:p.id,data:()=>p}))});}
 export function onSnapshot(ref,callback){listeners.set(ref.name,callback);emit(ref.name);return ()=>listeners.delete(ref.name);}
 export const serverTimestamp=()=>stamp;

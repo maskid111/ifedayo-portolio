@@ -1,13 +1,17 @@
+import {startCreatorAdmin} from './creator-admin.js';
 import { migrateBuiltInProjects } from './project-migration.js';
 import { migrateDeveloperProjects } from './developer-migration.js';
 import { migrateWeb3Selection } from './web3-selection-migration.js';
 import {projectTrack} from './developer-catalog.js';
+import {filterMessages,messageSiteLabel} from './message-utils.js';
 const $ = selector => document.querySelector(selector);
 const form = $('#projectForm');
 const dialog = $('#projectDialog');
 const nav = [...document.querySelectorAll('[data-view]')];
 let firebase, activeUser, projects = [], messages = [], unsubscribers = [], noticeTimer;
 let projectsLoaded = false, messagesLoaded = false;
+let stopCreator=()=>{};
+let activeView='projects',creatorPosts=[],creatorLoaded=false;
 
 function escapeHtml(value) {
  return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -33,13 +37,16 @@ function safePreview(value) {
  return /^\/assets\/project-previews\/[a-z0-9-]+\.(?:png|jpg)$/.test(value || '') ? value : safeUrl(value);
 }
 function setView(view) {
- const inbox = view === 'messages';
- $('#projectsView').hidden = inbox; $('#messagesView').hidden = !inbox;
- $('#pageTitle').textContent = inbox ? 'Let’s talk possibilities.' : 'Project library';
- $('#pageDescription').textContent = inbox ? 'New ideas, new collaborations, new conversations.' : 'A home for everything you’re building.';
- $('#breadcrumb').textContent = inbox ? 'Inbox' : 'Projects';
- $('#addProjectBtn').hidden = inbox;
+ activeView=view;
+ const inbox = view === 'messages', creator=view==='creator';
+ $('#creatorView').hidden=!creator;$('#addCreatorBtn').hidden=!creator;
+ $('#projectsView').hidden = inbox||creator; $('#messagesView').hidden = !inbox;
+ $('#pageTitle').textContent = creator ? 'Creator content library' : inbox ? 'Let’s talk possibilities.' : 'Developer projects';
+ $('#pageDescription').textContent = creator ? 'Publish and manage X videos and threads on your creator portfolio.' : inbox ? 'One inbox for your developer portfolio, creator portfolio, and main hub.' : 'A home for everything you’re building.';
+ $('#breadcrumb').textContent = creator ? 'Creator posts' : inbox ? 'Inbox' : 'Developer projects';
+ $('#addProjectBtn').hidden = inbox||creator;
  nav.forEach(button => { const selected = button.dataset.view === view; button.classList.toggle('active', selected); if(selected) button.setAttribute('aria-current','page'); else button.removeAttribute('aria-current'); });
+ stats();
 }
 function stats() {
  $('#totalStat').textContent = projectsLoaded ? projects.length : '—';
@@ -48,6 +55,12 @@ function stats() {
  $('#unreadStat').textContent = messagesLoaded ? messages.filter(m => m.status !== 'read').length : '—';
  $('#navProjectCount').textContent = projectsLoaded ? projects.length : '—';
  $('#navUnreadCount').textContent = $('#unreadStat').textContent;
+ const creator=activeView==='creator',inbox=activeView==='messages';
+ $('#totalStatLabel').textContent=creator?'Creator posts':inbox?'All enquiries':'Developer projects';
+ $('#featuredStatLabel').textContent=creator?'Published posts':inbox?'Creator enquiries':'Featured & published';
+ $('#publishedStatLabel').textContent=creator?'Hidden posts':inbox?'Main Hub enquiries':'Published projects';
+ if(creator){$('#totalStat').textContent=creatorLoaded?creatorPosts.length:'—';$('#featuredStat').textContent=creatorLoaded?creatorPosts.filter(p=>p.published).length:'—';$('#publishedStat').textContent=creatorLoaded?creatorPosts.filter(p=>!p.published).length:'—';}
+ if(inbox){$('#totalStat').textContent=messagesLoaded?messages.length:'—';$('#featuredStat').textContent=messagesLoaded?filterMessages(messages,{site:'creator'}).length:'—';$('#publishedStat').textContent=messagesLoaded?filterMessages(messages,{site:'hub'}).length:'—';}
 }
 function renderProjects() {
  const search = $('#projectSearch').value.trim().toLowerCase(), filter = $('#projectFilter').value;
@@ -61,15 +74,15 @@ function renderProjects() {
  stats();
 }
 function renderMessages() {
- const filter = $('#messageFilter').value;
- const visible = messages.filter(m => filter === 'all' || (m.status === 'read' ? 'read' : 'unread') === filter);
- $('#messageCount').textContent = messages.length;
+ const visible = filterMessages(messages,{status:$('#messageFilter').value,site:$('#messageSiteFilter').value});
+ $('#messageCount').textContent = visible.length + ' / ' + messages.length;
  $('#messagesList').innerHTML = visible.map(message => {
   const date = message.createdAt?.toDate?.();
   const dateText = date ? new Intl.DateTimeFormat(undefined, {dateStyle:'medium', timeStyle:'short'}).format(date) : 'Just now';
   const email = String(message.email || '');
+  const details = '<p class="message-origin"><span>'+escapeHtml(messageSiteLabel(message))+'</span>'+(message.timeline?' · Timing: '+escapeHtml(message.timeline):'')+'</p>';
   const reply = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? 'mailto:' + encodeURIComponent(email) : '';
-  return '<article class="message-card ' + (message.status === 'read' ? 'read' : '') + '"><div class="message-heading"><h3>' + escapeHtml(message.subject || 'A new conversation') + '</h3><span class="message-date">' + escapeHtml(dateText) + '</span></div><p class="message-sender"><strong>' + escapeHtml(message.name || 'Visitor') + '</strong> · ' + escapeHtml(email) + '</p><p class="message-copy">' + escapeHtml(message.message) + '</p><div class="message-actions">' + (reply ? '<a class="text-button" href="' + escapeHtml(reply) + '">Reply by email ↗</a>' : '') + '<button type="button" class="text-button" data-read="' + escapeHtml(message.id) + '">' + (message.status === 'read' ? 'Mark unread' : 'Mark read') + '</button><button type="button" class="text-button danger" data-message-delete="' + escapeHtml(message.id) + '">Delete</button></div></article>';
+  return '<article class="message-card ' + (message.status === 'read' ? 'read' : '') + '"><div class="message-heading"><h3>' + escapeHtml(message.subject || 'A new conversation') + '</h3><span class="message-date">' + escapeHtml(dateText) + '</span></div>' + details + '<p class="message-sender"><strong>' + escapeHtml(message.name || 'Visitor') + '</strong> · ' + escapeHtml(email) + '</p><p class="message-copy">' + escapeHtml(message.message) + '</p><div class="message-actions">' + (reply ? '<a class="text-button" href="' + escapeHtml(reply) + '">Reply by email ↗</a>' : '') + '<button type="button" class="text-button" data-read="' + escapeHtml(message.id) + '">' + (message.status === 'read' ? 'Mark unread' : 'Mark read') + '</button><button type="button" class="text-button danger" data-message-delete="' + escapeHtml(message.id) + '">Delete</button></div></article>';
  }).join('') || '<div class="empty-state"><strong>' + (messages.length ? 'All caught up.' : 'The start of something good.') + '</strong>' + (messages.length ? 'No messages match this filter.' : 'Messages sent through your contact form will appear here.') + '</div>';
  stats();
 }
@@ -94,6 +107,8 @@ async function action(button, work, success) {
 }
 function stopListening() { unsubscribers.forEach(unsubscribe => unsubscribe()); unsubscribers = []; }
 function clearSession() {
+ stopCreator();stopCreator=()=>{};
+ creatorPosts=[];creatorLoaded=false;
  stopListening(); projects = []; messages = []; projectsLoaded = false; messagesLoaded = false;
  $('#projectsList').innerHTML = '<p class="empty-state">Loading your projects…</p>';
  $('#messagesList').innerHTML = '<p class="empty-state">Loading your messages…</p>';
@@ -133,6 +148,7 @@ nav.forEach(button => button.addEventListener('click', () => setView(button.data
 $('#projectSearch').addEventListener('input', renderProjects);
 $('#projectFilter').addEventListener('change', renderProjects);
 $('#messageFilter').addEventListener('change', renderMessages);
+$('#messageSiteFilter').addEventListener('change', renderMessages);
 $('#addProjectBtn').addEventListener('click', () => openEditor());
 $('#closeProjectBtn').addEventListener('click', () => dialog.close());
 $('#resetProjectBtn').addEventListener('click', () => dialog.close());
@@ -193,7 +209,7 @@ try {
   $('#userRole').textContent = approved ? 'Administrator' : 'Your creative workspace';
   $('#authStatus').classList.toggle('error',!!user && !approved);
   $('#authStatus').textContent = user && !approved ? user.email + ' is not an approved admin. Sign out and use your admin account.' : 'Sign in with your approved Google account.';
-  if(approved) {setView('projects');startWorkspace(user);} else $('#breadcrumb').textContent = 'Studio';
+  if(approved) {setView('projects');startWorkspace(user);stopCreator=startCreatorAdmin(firebase,user,notify,posts=>{creatorPosts=posts;creatorLoaded=true;stats();});} else $('#breadcrumb').textContent = 'Studio';
  }, error => {$('#authStatus').textContent=errorMessage(error);$('#authStatus').classList.add('error');});
 } catch(error) {
  $('#signInLabel').textContent = 'Sign-in unavailable';

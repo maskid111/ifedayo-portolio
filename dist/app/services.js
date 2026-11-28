@@ -14,7 +14,8 @@ export const services={
    subject:fields['your-subject']||fields.subject||'',
    message:fields['your-message']||fields.message||'',
    status:'unread',
-   source:location.pathname,
+   site:'developer',
+   source:location.origin+location.pathname,
    createdAt:serverTimestamp(),
   };
   try{

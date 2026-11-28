@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#ecf0f3"/>
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}"/>
+<link rel="canonical" href="{{DOMAIN}}/"/>
+<link rel="icon" href="/assets/logo.png" type="image/png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Maskid"/>
+<meta property="og:title" content="{{TITLE}}"/>
+<meta property="og:description" content="{{DESCRIPTION}}"/>
+<meta property="og:url" content="{{DOMAIN}}/"/>
+<meta property="og:image" content="{{DOMAIN}}/assets/maskid-banner.jpg"/>
+<meta property="og:image:width" content="1280"/>
+<meta property="og:image:height" content="492"/>
+<meta property="og:image:alt" content="Maskid — Believe in Something"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@deft_gfx"/>
+<meta name="twitter:image" content="{{DOMAIN}}/assets/maskid-banner.jpg"/>
+<link rel="stylesheet" href="/styles.css"/>
+<script src="/app.js" type="module"></script>
+</head>
+<body>
+{{HEADER}}
+
+<main id="main">
+<section class="hero hub-hero" id="home"><div class="container"><div class="hero-grid"><div class="hero-copy"><p class="eyebrow">THE MASKID HUB</p><h1>One name.<br/><span class="accent">Different worlds.</span></h1><p>I’m Maskid. I create, build, and explore the markets. This is the starting point for the different parts of my work.</p><div class="hero-actions"><a class="button primary" href="#explore">Find your destination</a><a class="button" href="#contact">Let’s connect</a></div><div class="hero-tags"><span>Developer</span><span>Trader</span><span>Creator</span></div></div><div class="hub-identity reveal"><div class="hub-orbit-label">BELIEVE IN SOMETHING.</div><div class="hub-avatar-shell"><img src="/assets/maskid-pfp.jpg" width="1254" height="1254" alt="Maskid’s blue M identity" fetchpriority="high"/></div><div class="hub-identity-footer"><strong>Maskid</strong><span>@deft_gfx</span></div><div class="hub-destinations-mini" aria-label="Available destinations"><span>Content</span><span>Products</span><span>Markets</span></div></div></div></div></section>
+<section class="section section-border" id="explore"><div class="container"><div class="section-heading"><div><p class="eyebrow">CHOOSE YOUR DESTINATION</p><h2>What brings you here?</h2></div><p>Three dedicated spaces. Each one gives you a closer look at a different side of my work.</p></div><div class="destination-grid">{{DESTINATIONS}}</div></div></section>
+<section class="section section-tint hub-about" id="about"><div class="container split-section"><div><p class="eyebrow">ONE CONNECTED IDENTITY</p><h2>Different interests.<br/><span class="accent">The same conviction.</span></h2><p>Believe in Something. That idea runs through how I create, build, and learn.</p><p>I’m Adeyemo Muiz Ifedayo, known as Maskid. This hub brings my work together while giving each part its own space to grow.</p><a class="button" href="https://x.com/deft_gfx" target="_blank" rel="noopener noreferrer">Follow on X</a></div><div class="hub-guide"><div><span class="guide-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg></span><div><h3>Here for the content?</h3><p>Explore videos, writing, and collaborations.</p><a href="{{CREATOR_URL}}">Go to Creator</a></div></div><div><span class="guide-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-14-2 18"/></svg></span><div><h3>Have something to build?</h3><p>See Web2 and Web3 projects and development work.</p><a href="{{PORTFOLIO_URL}}">Go to Developer</a></div></div><div><span class="guide-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4v16h16M7 15l4-5 4 2 5-7"/></svg></span><div><h3>Looking for the market side?</h3><p>Visit the space for trading and market analysis.</p><a href="{{TRADING_URL}}">Go to Trading</a></div></div></div></div></section>
+<section class="section" id="contact"><div class="container"><div class="contact-panel"><div><p class="eyebrow">LET’S CONNECT</p><h2>Find the right conversation.</h2><p>Have a collaboration in mind, or unsure where your idea fits? Tell me a little about it.</p><div class="contact-list"><a href="mailto:{{EMAIL}}"><span>Email</span><small>{{EMAIL}}</small></a><a href="https://t.me/iammaskid" target="_blank" rel="noopener noreferrer"><span>Telegram</span><small>@iammaskid</small></a><a href="https://wa.me/2348088188986" target="_blank" rel="noopener noreferrer"><span>WhatsApp</span><small>08088188986</small></a><a href="https://x.com/deft_gfx" target="_blank" rel="noopener noreferrer"><span>X</span><small>@deft_gfx</small></a><button type="button" data-copy-email="{{EMAIL}}"><span>Copy email address</span><small aria-hidden="true">Copy</small></button></div></div><form class="brief-form" data-brief-form data-site="hub" data-email="{{EMAIL}}"><label class="form-trap" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"/></label><div class="form-row"><label>Your name<input name="name" autocomplete="name" maxlength="120" required/></label><label>Your email<input name="email" autocomplete="email" type="email" maxlength="200" required/></label></div><label>What do you have in mind?<select name="service"><option>Creator collaboration</option><option>Development project</option><option>Trading / market enquiry</option><option>Mentorship / training</option><option>Something else</option></select></label><label>Project brief<textarea name="message" rows="4" placeholder="A little about your idea, audience, and what you need…" maxlength="3000" required></textarea></label><label>Timing, optional<input name="timeline" placeholder="e.g. Next month" maxlength="150"/></label><button type="submit" class="button primary">Send enquiry</button><p class="form-hint">This form sends your enquiry to my private admin dashboard. No email app is needed.</p><p class="form-status" data-form-status role="status"></p></form></div></div></section>
+</main>{{FOOTER}}<script type="module" src="/contact.js"></script></body></html>
